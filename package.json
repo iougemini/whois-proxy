@@ -1,0 +1,16 @@
+{
+  "name": "my-whois-project",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/whois-proxy.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "whois": "^2.0.3",
+    "node-cache": "^5.1.2",
+    "express-rate-limit": "^5.2.6"
+  },
+  "engines": {
+    "node": ">=14.x"
+  }
+}
