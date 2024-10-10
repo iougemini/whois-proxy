@@ -1,7 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const winston = require('winston');
-const whois = require('whois');
 const NodeCache = require('node-cache');
 
 const app = express();
@@ -104,7 +103,7 @@ app.get('/', (req, res) => {
         <p class="description">欢迎使用我们的 WHOIS 代理服务！</p>
         <div class="usage">
           <p><strong>使用示例：</strong></p>
-          <code>/api/whois/example.com</code>
+          <code>/api/whois?domain=example.com</code>
         </div>
         <form action="/api/whois" method="get">
           <input type="text" name="domain" placeholder="输入域名" required>
@@ -114,40 +113,6 @@ app.get('/', (req, res) => {
     </body>
     </html>
   `);
-});
-
-app.get('/api/whois/:domain', async (req, res) => {
-  logger.info('WHOIS API called');
-  const { domain } = req.params;
-
-  if (!domain) {
-    logger.warn('Domain parameter is missing');
-    return res.status(400).json({ error: 'Domain parameter is required' });
-  }
-
-  try {
-    const cachedData = cache.get(domain);
-    if (cachedData) {
-      logger.info(`Cached data found for ${domain}`);
-      return res.json(cachedData);
-    }
-
-    const data = await new Promise((resolve, reject) => {
-      whois.lookup(domain, (err, data) => {
-        if (err) reject(err);
-        else resolve(data);
-      });
-    });
-
-    const result = { domain, rawData: data };
-    cache.set(domain, result);
-
-    logger.info(`WHOIS data retrieved for ${domain}`);
-    res.json(result);
-  } catch (error) {
-    logger.error(`Error processing WHOIS data for ${domain}:`, error);
-    res.status(500).json({ error: 'Error processing WHOIS data', details: error.message });
-  }
 });
 
 module.exports = app;
