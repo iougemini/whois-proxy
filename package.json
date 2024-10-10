@@ -2,7 +2,7 @@
   "name": "whois-proxy-vercel",
   "version": "1.0.0",
   "description": "WHOIS proxy server for Vercel",
-  "main": "api/whois.js",
+  "main": "api/whois-proxy.js",
   "dependencies": {
     "whois": "^2.13.9",
     "node-cache": "^5.1.2"
