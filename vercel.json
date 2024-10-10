@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/api/whois-proxy.js",
+      "src": "api/whois-proxy.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/whois-proxy.js",
-      "dest": "/api/whois-proxy.js"
+      "dest": "api/whois-proxy.js"
     }
   ]
 }
