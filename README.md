@@ -1,3 +1,4 @@
+
 # 项目描述
 
 这是一个简单的 WHOIS 代理服务器,使用 Node.js 和 Express 框架构建。它提供了一个 API 端点来查询域名的 WHOIS 信息,并包含以下特性:
@@ -22,6 +23,11 @@ f. 部署完成后，Vercel 会提供一个 URL，你可以通过这个 URL 访�
 https://your-project-name.vercel.app/api/whois?domain=example.com
 ```
 替换 your-project-name 为你实际的 Vercel 项目名称，example.com 为你想查询的域名。
+# 修改路由为
+
+```
+https://your-project-name.vercel.app/api/whois/example.com
+```
 
 # 本地部署
 ## 前置要求
