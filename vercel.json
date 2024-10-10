@@ -1,10 +1,12 @@
 {
   "version": 2,
   "builds": [
-    { "src": "index.js", "use": "@vercel/node" }
+    { "src": "index.js", "use": "@vercel/node" },
+    { "src": "api/whois/[domain].js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/whois/(?<domain>[^/]+)", "dest": "/api/whois/[domain].js?domain=$domain" },
+    { "src": "/api/whois/(?<domain>[^/]+)", "dest": "/api/whois/[domain]?domain=$domain" },
+    { "src": "/api/whois", "dest": "/api/whois/[domain]" },
     { "src": "/(.*)", "dest": "/index.js" }
   ]
 }
