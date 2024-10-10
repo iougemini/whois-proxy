@@ -1,13 +1,19 @@
 {
   "name": "whois-proxy-vercel",
   "version": "1.0.0",
-  "description": "WHOIS proxy server for Vercel",
+  "description": "A WHOIS proxy service deployed on Vercel",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
-    "whois": "^2.13.9",
     "node-cache": "^5.1.2",
+    "whois": "^2.13.9",
     "winston": "^3.3.3"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
