@@ -1,7 +1,15 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  const { domain } = req.query;
+  let domain = req.query.domain;
+
+  // 如果 domain 不在查询参数中，尝试从路径中获取
+  if (!domain && req.url) {
+    const matches = req.url.match(/\/api\/whois\/(.+)/);
+    if (matches && matches[1]) {
+      domain = matches[1];
+    }
+  }
 
   if (!domain) {
     return res.status(400).json({ error: 'Domain parameter is required' });
