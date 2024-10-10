@@ -1,35 +1,37 @@
-import fetch from 'node-fetch';
+const whois = require('whois');
+const NodeCache = require('node-cache');
 
-export default async function handler(req, res) {
-  let { domain } = req.query;
+const cache = new NodeCache({ stdTTL: 3600 });
+
+module.exports = async (req, res) => {
+  console.log('WHOIS API called');
+  
+  // 从 URL 路径中提取域名
+  const domain = req.url.split('/').pop();
 
   if (!domain) {
     return res.status(400).json({ error: 'Domain parameter is required' });
   }
 
-  const domainRegex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
-  if (!domainRegex.test(domain)) {
-    return res.status(400).json({ error: 'Invalid domain format' });
-  }
-
   try {
-    const rdapResponse = await fetch(`https://rdap.org/domain/${domain}`);
-
-    if (!rdapResponse.ok) {
-      const errorText = await rdapResponse.text();
-      throw new Error(`RDAP API request failed: ${rdapResponse.status} ${rdapResponse.statusText}. Response: ${errorText}`);
+    const cachedData = cache.get(domain);
+    if (cachedData) {
+      return res.json(cachedData);
     }
 
-    const whoisData = await rdapResponse.json();
-
-    res.status(200).json({ domain, whoisData });
-  } catch (error) {
-    console.error('Error in WHOIS lookup:', error);
-
-    res.status(500).json({ 
-      error: 'Error processing WHOIS data', 
-      details: error.message,
-      stack: error.stack
+    const data = await new Promise((resolve, reject) => {
+      whois.lookup(domain, (err, data) => {
+        if (err) reject(err);
+        else resolve(data);
+      });
     });
+
+    const result = { domain, rawData: data };
+    cache.set(domain, result);
+
+    res.json(result);
+  } catch (error) {
+    console.error(`Error processing WHOIS data for ${domain}:`, error);
+    res.status(500).json({ error: 'Error processing WHOIS data', details: error.message });
   }
-}
+};
