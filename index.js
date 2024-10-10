@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
         <p class="description">欢迎使用我们的 WHOIS 代理服务！</p>
         <div class="usage">
           <p><strong>使用示例：</strong></p>
-          <code>/api/whois?domain=example.com</code>
+          <code>/api/whois/example.com</code>
         </div>
         <form action="/api/whois" method="get">
           <input type="text" name="domain" placeholder="输入域名" required>
@@ -116,9 +116,9 @@ app.get('/', (req, res) => {
   `);
 });
 
-app.get('/api/whois', async (req, res) => {
+app.get('/api/whois/:domain', async (req, res) => {
   logger.info('WHOIS API called');
-  const { domain } = req.query;
+  const { domain } = req.params;
 
   if (!domain) {
     logger.warn('Domain parameter is missing');
