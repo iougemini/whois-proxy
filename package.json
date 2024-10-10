@@ -10,7 +10,6 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "node-cache": "^5.1.2",
-    "whois": "^2.13.9",
     "winston": "^3.3.3",
     "node-fetch": "^2.6.1"
   },
