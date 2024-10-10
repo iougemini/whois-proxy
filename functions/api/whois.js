@@ -17,7 +17,8 @@ export async function onRequestGet(context) {
     });
 
     if (!whoisResponse.ok) {
-      throw new Error('WHOIS API request failed');
+      const errorText = await whoisResponse.text();
+      throw new Error(`WHOIS API request failed: ${whoisResponse.status} ${whoisResponse.statusText}. Response: ${errorText}`);
     }
 
     const whoisData = await whoisResponse.json();
@@ -26,7 +27,14 @@ export async function onRequestGet(context) {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error processing WHOIS data', details: error.message }), {
+    // Log the error for debugging
+    console.error('Error in WHOIS lookup:', error);
+
+    return new Response(JSON.stringify({ 
+      error: 'Error processing WHOIS data', 
+      details: error.message,
+      stack: error.stack
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
