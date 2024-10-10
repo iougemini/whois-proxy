@@ -1,5 +1,3 @@
-import { lookup } from 'whois-promise';
-
 export async function onRequestGet(context) {
   const { searchParams } = new URL(context.request.url);
   const domain = searchParams.get('domain');
@@ -12,8 +10,19 @@ export async function onRequestGet(context) {
   }
 
   try {
-    const data = await lookup(domain);
-    return new Response(JSON.stringify({ domain, rawData: data }), {
+    const whoisResponse = await fetch(`https://whois.cloudflare.com/dns?name=${domain}`, {
+      headers: {
+        'Accept': 'application/dns+json'
+      }
+    });
+
+    if (!whoisResponse.ok) {
+      throw new Error('WHOIS API request failed');
+    }
+
+    const whoisData = await whoisResponse.json();
+
+    return new Response(JSON.stringify({ domain, whoisData }), {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
