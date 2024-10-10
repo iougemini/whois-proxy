@@ -1,0 +1,12 @@
+{
+  "name": "whois-proxy-cloudflare",
+  "version": "1.0.0",
+  "description": "A WHOIS proxy service deployed on Cloudflare Pages",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "whois-promise": "^3.0.2"
+  }
+}
