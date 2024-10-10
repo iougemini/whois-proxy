@@ -4,7 +4,7 @@
     { "src": "index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/whois", "dest": "/index.js" },
+    { "src": "/api/whois/(?<domain>[^/]+)", "dest": "/api/whois/[domain].js?domain=$domain" },
     { "src": "/(.*)", "dest": "/index.js" }
   ]
 }
